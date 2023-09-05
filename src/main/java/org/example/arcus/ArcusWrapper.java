@@ -55,4 +55,14 @@ public class ArcusWrapper<T> {
     }
     return Optional.empty();
   }
+
+  public boolean deleteAll() {
+    Future<Boolean> future = arcusClient.flush();
+    try {
+      return future.get(OPERATION_TIMEOUT, TimeUnit.MILLISECONDS);
+    } catch (Exception e) {
+      future.cancel(true);
+    }
+    return false;
+  }
 }
